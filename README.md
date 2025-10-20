@@ -4,70 +4,79 @@
 
 **URL**: https://lovable.dev/projects/cb811353-75d9-4752-8989-85630b9190ce
 
-## How can I edit this code?
+# ResumeAI — AI-Powered Resume Builder
 
-There are several ways of editing your application.
+Create professional, ATS-friendly resumes quickly using AI. This project is a Vite + React + TypeScript app that uses Supabase for auth and data storage.
 
-**Use Lovable**
+## Quick overview
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/cb811353-75d9-4752-8989-85630b9190ce) and start prompting.
+- Frontend: Vite + React + TypeScript
+- Styling: Tailwind CSS
+- Database & Auth: Supabase (hosted Postgres)
+- Serverless: Supabase Functions (Edge/Serverless)
 
-Changes made via Lovable will be committed automatically to this repo.
+## Getting started (developer)
 
-**Use your preferred IDE**
+1. Clone the repo and install dependencies
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+```powershell
+git clone https://github.com/Manasamalli06/AI---Powered-Resume-Builder.git
+cd AI---Powered-Resume-Builder
+npm install
+```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+2. Create a `.env` file in the project root and provide Supabase values (copy the existing `.env` as a starting point):
 
-Follow these steps:
+```properties
+VITE_SUPABASE_URL="https://<your-project>.supabase.co"
+VITE_SUPABASE_PUBLISHABLE_KEY="<anon-or-publishable-key>"
+VITE_SUPABASE_PROJECT_ID="<project-id>"
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3. Start the dev server
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```powershell
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+4. Open the app at http://localhost:5173 (default Vite port).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Supabase
 
-**Use GitHub Codespaces**
+- Supabase config: `supabase/config.toml`
+- Migrations: `supabase/migrations/*.sql` (these define the `profiles` and `resumes` tables and RLS policies)
+- Client code: `src/integrations/supabase/client.ts`
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+To apply migrations locally, use the Supabase CLI or psql. This project expects a hosted Supabase instance for auth and DB.
 
-## What technologies are used for this project?
+## Environment & Security
 
-This project is built with:
+- Do not commit service_role keys or other secrets. The frontend uses publishable keys only.
+- For server-side tasks, use a service role key on a trusted server.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Project structure (key files)
 
-## How can I deploy this project?
+- `src/` — React + TypeScript source
+- `src/integrations/supabase/` — generated types and supabase client
+- `supabase/functions/` — serverless functions (e.g., generate-resume)
+- `supabase/migrations/` — SQL migrations
+- `public/` — static assets (favicon, images)
 
-Simply open [Lovable](https://lovable.dev/projects/cb811353-75d9-4752-8989-85630b9190ce) and click on Share -> Publish.
+## Development notes
 
-## Can I connect a custom domain to my Lovable project?
+- Tailwind directives in `src/index.css` (`@tailwind`, `@apply`) require Tailwind/PostCSS support in your editor for correct linting/intellisense.
+- If you see unknown at-rule warnings in your editor, install the Tailwind CSS IntelliSense extension or configure your linter to allow Tailwind at-rules.
 
-Yes, you can!
+## Contributing
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Open an issue or submit a PR. Keep changes small and add tests if you modify behavior.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## Extras I can add
+
+- `.env.example` with placeholders
+- GitHub Actions workflow for CI (lint/build)
+- Badges for README (build, license)
+
+---
+
+If you'd like, I can push an updated README to the GitHub repo and open a PR (or commit directly) — tell me which you prefer.
