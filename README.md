@@ -2,8 +2,6 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/cb811353-75d9-4752-8989-85630b9190ce
-
 # ResumeAI — AI-Powered Resume Builder
 
 Create professional, ATS-friendly resumes quickly using AI. This project is a Vite + React + TypeScript app that uses Supabase for auth and data storage.
