@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { api } from "@/services/api";
 
 export const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,30 +14,40 @@ export const AuthForm = () => {
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const isPasswordStrong = (pass: string) => {
+    const hasLetter = /[a-zA-Z]/.test(pass);
+    const hasNumber = /\d/.test(pass);
+    const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(pass);
+    return pass.length >= 8 && hasLetter && hasNumber && hasSymbol;
+  };
+
+  const showPasswordError = !isLogin && password.length > 0 && !isPasswordStrong(password);
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isLogin && !isPasswordStrong(password)) {
+      toast.error("Please use a stronger password");
+      return;
+    }
+
     setLoading(true);
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
+        const data = await api.post("/auth/login", { email, password });
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
         toast.success("Welcome back!");
+        window.location.reload(); // Refresh to update session state in Index.tsx
       } else {
-        const { error } = await supabase.auth.signUp({
+        await api.post("/auth/register", {
           email,
           password,
-          options: {
-            data: {
-              full_name: fullName,
-            },
-          },
+          fullName,
         });
-        if (error) throw error;
-        toast.success("Account created successfully!");
+        toast.success("Account created successfully! Please sign in.");
+        setIsLogin(true);
       }
     } catch (error: any) {
       toast.error(error.message || "Authentication failed");
@@ -47,12 +57,12 @@ export const AuthForm = () => {
   };
 
   return (
-    <Card className="w-full max-w-md shadow-lg border-primary/20">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center bg-clip-text text-transparent gradient-hero">
+    <Card className="w-full max-w-md shadow-lg border-primary/20 overflow-hidden">
+      <CardHeader className="space-y-1 gradient-hero">
+        <CardTitle className="text-2xl font-bold text-center text-white/90 drop-shadow-sm">
           {isLogin ? "Welcome Back" : "Create Account"}
         </CardTitle>
-        <CardDescription className="text-center">
+        <CardDescription className="text-center text-white/70">
           {isLogin
             ? "Sign in to access your AI-powered resumes"
             : "Start building professional resumes with AI"}
@@ -93,8 +103,12 @@ export const AuthForm = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              minLength={6}
             />
+            {showPasswordError && (
+              <p className="text-xs text-red-500 mt-1 font-medium italic animate-in fade-in duration-300">
+                weak error: use 8+ chars with letters, numbers & symbols
+              </p>
+            )}
           </div>
           <Button
             type="submit"

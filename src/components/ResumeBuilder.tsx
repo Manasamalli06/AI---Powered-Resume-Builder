@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { api } from "@/services/api";
 import { ResumePreview } from "./ResumePreview";
 
 export interface ResumeData {
@@ -45,10 +45,10 @@ export interface ResumeData {
   }>;
 }
 
-export const ResumeBuilder = ({ 
-  userId, 
-  initialResume 
-}: { 
+export const ResumeBuilder = ({
+  userId,
+  initialResume
+}: {
   userId: string;
   initialResume?: any;
 }) => {
@@ -69,57 +69,39 @@ export const ResumeBuilder = ({
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("generate-resume", {
-        body: { 
-          prompt,
-          existingResume: resumeData // Pass existing resume for edits
-        },
+      const data = await api.post("/generate-resume", {
+        prompt,
+        existingResume: resumeData
       });
-
-      if (error) throw error;
-
-      if (data.error) {
-        throw new Error(data.error);
-      }
 
       const generatedResume = data.resumeData;
       setResumeData(generatedResume);
 
       // Save or update in database
       if (resumeId) {
-        // Update existing resume
-        const { error: updateError } = await supabase
-          .from("resumes")
-          .update({
-            content: generatedResume,
-            prompt: prompt, // Update with latest prompt
-          })
-          .eq("id", resumeId);
+        await api.put(`/resumes/${resumeId}`, {
+          title: generatedResume.personalInfo.fullName
+            ? `${generatedResume.personalInfo.fullName}'s Resume`
+            : "My Resume",
+          content: generatedResume,
+          prompt: prompt,
+        });
 
-        if (updateError) throw updateError;
         toast.success("Resume updated successfully!");
       } else {
-        // Create new resume
-        const { data: savedResume, error: saveError } = await supabase
-          .from("resumes")
-          .insert({
-            user_id: userId,
-            title: generatedResume.personalInfo.fullName
-              ? `${generatedResume.personalInfo.fullName}'s Resume`
-              : "My Resume",
-            prompt,
-            content: generatedResume,
-          })
-          .select()
-          .single();
+        const savedResume = await api.post("/resumes", {
+          title: generatedResume.personalInfo.fullName
+            ? `${generatedResume.personalInfo.fullName}'s Resume`
+            : "My Resume",
+          prompt,
+          content: generatedResume,
+        });
 
-        if (saveError) throw saveError;
-        
         setResumeId(savedResume.id);
         toast.success("Resume generated successfully!");
       }
-      
-      setPrompt(""); // Clear prompt for next edit
+
+      setPrompt("");
     } catch (error: any) {
       console.error("Resume generation error:", error);
       toast.error(error.message || "Failed to generate resume");

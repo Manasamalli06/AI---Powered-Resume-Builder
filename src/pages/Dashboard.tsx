@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { LogOut, Plus, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { ResumeBuilder } from "@/components/ResumeBuilder";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { api } from "@/services/api";
 
 export const Dashboard = () => {
   const [user, setUser] = useState<any>(null);
@@ -18,28 +18,27 @@ export const Dashboard = () => {
   }, []);
 
   const getUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    setUser(user);
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      setUser(JSON.parse(userStr));
+    }
   };
 
   const fetchResumes = async () => {
-    const { data, error } = await supabase
-      .from("resumes")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
+    try {
+      const data = await api.get("/resumes");
+      setResumes(data || []);
+    } catch (error) {
       console.error("Error fetching resumes:", error);
-      return;
+      toast.error("Failed to fetch resumes");
     }
-    setResumes(data || []);
   };
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     toast.success("Signed out successfully");
+    window.location.reload();
   };
 
   const handleResumeClick = (resume: any) => {
@@ -55,11 +54,11 @@ export const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="border-b border-border/40 bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <nav className="border-b border-border/40 gradient-hero backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <FileText className="h-6 w-6 text-primary" />
-            <h1 className="text-2xl font-bold bg-clip-text text-transparent gradient-hero">
+          <div className="flex items-center gap-2 text-white/90">
+            <FileText className="h-6 w-6 text-white/90" />
+            <h1 className="text-2xl font-bold text-white/90 drop-shadow-sm">
               ResumeAI
             </h1>
           </div>
@@ -80,9 +79,9 @@ export const Dashboard = () => {
                   Create and manage your AI-powered resumes
                 </p>
               </div>
-              <Button 
-                variant="gradient" 
-                size="lg" 
+              <Button
+                variant="gradient"
+                size="lg"
                 onClick={() => {
                   setSelectedResume(null);
                   setShowBuilder(true);
@@ -151,8 +150,8 @@ export const Dashboard = () => {
                 Back to Dashboard
               </Button>
             </div>
-            <ResumeBuilder 
-              userId={user?.id} 
+            <ResumeBuilder
+              userId={user?.id}
               initialResume={selectedResume}
             />
           </div>

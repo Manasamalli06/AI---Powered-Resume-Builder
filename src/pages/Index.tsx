@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { AuthForm } from "@/components/AuthForm";
 import { Dashboard } from "./Dashboard";
 import { Button } from "@/components/ui/button";
@@ -10,18 +9,12 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
+    const token = localStorage.getItem("token");
+    const userStr = localStorage.getItem("user");
+    if (token && userStr) {
+      setSession({ user: JSON.parse(userStr), token });
+    }
+    setLoading(false);
   }, []);
 
   if (loading) {
@@ -77,7 +70,7 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-  <section id="features" className="py-20 bg-card/50">
+      <section id="features" className="py-20 bg-card/50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">Why Choose ResumeAI?</h2>
