@@ -1,0 +1,138 @@
+{
+  "skills": {
+    "toolsPlatforms": [
+      "Jupyter Notebook",
+      "VS Code",
+      "Docker",
+      "AWS (EC2, S3 basics)",
+      "Google Cloud Platform (basics)"
+    ],
+    "librariesFrameworks": [
+      "Pandas",
+      "NumPy",
+      "Scikit-learn",
+      "TensorFlow",
+      "Keras",
+      "Matplotlib",
+      "Seaborn",
+      "Flask",
+      "Git"
+    ],
+    "programmingLanguages": [
+      "Python",
+      "SQL",
+      "C++",
+      "Java"
+    ],
+    "conceptsMethodologies": [
+      "Data Structures",
+      "Algorithms",
+      "Object-Oriented Programming (OOP)",
+      "Machine Learning (Supervised/Unsupervised)",
+      "Deep Learning (CNNs, RNNs basics)",
+      "Data Analysis",
+      "Software Development Life Cycle (SDLC)",
+      "Database Management",
+      "Version Control"
+    ]
+  },
+  "summary": "Highly motivated and results-driven student with a strong foundation in Python, Data Structures & Algorithms, and Machine Learning basics. Proven ability to translate theoretical knowledge into practical solutions through project-based learning in AI/ML, data analysis, and software development. Eager to contribute technical skills and a passion for innovation to challenging internship and entry-level roles in software engineering, data analytics, or AI-related fields.",
+  "projects": [
+    {
+      "title": "Predictive Customer Churn Model",
+      "description": [
+        "Developed a machine learning model to predict customer churn using a telecommunications dataset of over 7,000 entries.",
+        "Preprocessed raw data, handled missing values, and performed feature engineering to prepare data for modeling.",
+        "Implemented and evaluated multiple classification algorithms (Logistic Regression, Random Forest, Gradient Boosting), achieving an F1-score of 0.82 with the Gradient Boosting Classifier.",
+        "Visualized key churn drivers and model performance, providing insights that could inform targeted retention strategies."
+      ],
+      "technologies": "Python, Pandas, Scikit-learn, Matplotlib, Jupyter Notebook"
+    },
+    {
+      "title": "Interactive Data Analysis Dashboard",
+      "description": [
+        "Created an interactive web-based dashboard for exploring e-commerce sales data, allowing users to filter and visualize trends by region, product category, and time.",
+        "Designed and implemented a SQL database schema to store and query sales transaction data efficiently.",
+        "Developed a Flask-based backend to serve data from the SQL database to the Dash frontend.",
+        "Enabled dynamic data filtering and aggregation, facilitating quick insights into sales performance and inventory management."
+      ],
+      "technologies": "Python, Pandas, Plotly, Dash, SQL"
+    },
+    {
+      "title": "Simple E-commerce Web Application",
+      "description": [
+        "Built a full-stack e-commerce web application with user authentication, product listings, shopping cart functionality, and order processing.",
+        "Designed and implemented a RESTful API using Flask for backend operations and database interaction.",
+        "Integrated SQLite database for persistent storage of user data, product information, and order history.",
+        "Focused on clean code architecture and responsive design, providing a user-friendly interface."
+      ],
+      "technologies": "Python, Flask, HTML, CSS, JavaScript, SQLite"
+    }
+  ],
+  "education": [
+    {
+      "gpa": "3.8/4.0",
+      "degree": "Bachelor of Science in Computer Science",
+      "endDate": "May 2025 (Expected)",
+      "location": "City, State",
+      "startDate": "Sept 2021",
+      "university": "University Name",
+      "relevantCoursework": [
+        "Data Structures & Algorithms",
+        "Object-Oriented Programming",
+        "Introduction to Machine Learning",
+        "Database Management Systems",
+        "Operating Systems",
+        "Calculus I & II",
+        "Linear Algebra"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "title": "Software Development Intern",
+      "company": "Tech Solutions Inc.",
+      "endDate": "Aug 2023",
+      "location": "Remote",
+      "startDate": "May 2023",
+      "description": [
+        "Developed and optimized Python scripts for data processing and automation, reducing manual effort by 20% for routine tasks.",
+        "Collaborated with a senior engineering team to implement new features for a web application using Flask and SQL, enhancing user experience.",
+        "Performed unit testing and debugging, contributing to a 15% reduction in reported bugs for assigned modules.",
+        "Participated in agile development sprints, daily stand-ups, and code reviews, improving code quality and team collaboration."
+      ]
+    },
+    {
+      "title": "Hackathon Participant",
+      "company": "Innovation X Hackathon",
+      "endDate": "Nov 2022",
+      "location": "University Name",
+      "startDate": "Nov 2022",
+      "description": [
+        "Designed and implemented a real-time sentiment analysis tool using Python, NLTK, and a pre-trained machine learning model within 24 hours.",
+        "Processed and analyzed a dataset of social media comments, achieving 85% accuracy in sentiment classification.",
+        "Presented the functional prototype to a panel of judges, demonstrating problem-solving and rapid prototyping skills."
+      ]
+    }
+  ],
+  "personalInfo": {
+    "name": "Your Name",
+    "email": "your.email@example.com",
+    "phone": "(123) 456-7890",
+    "github": "github.com/yourusername",
+    "linkedin": "linkedin.com/in/yourprofile",
+    "location": "City, State"
+  },
+  "certifications": [
+    {
+      "date": "Jan 2023",
+      "name": "Machine Learning Specialization",
+      "issuer": "Coursera (DeepLearning.AI)"
+    },
+    {
+      "date": "Oct 2022",
+      "name": "Python for Data Science, AI & Development",
+      "issuer": "IBM (Coursera)"
+    }
+  ]
+}
